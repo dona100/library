@@ -1,4 +1,4 @@
-"""library URL Configuration
+"""fakestore URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -15,7 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework.routers import DefaultRouter
+
+
+from books import views
+router=DefaultRouter()
+router.register("books",views.ProductsView,basename="books")
+router.register("carts",views.CartsView,basename="carts")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path("token/",obtain_auth_token),
+    path("reviews/<int:pk>/",views.ReviewDeleteView.as_view())
+]+router.urls
